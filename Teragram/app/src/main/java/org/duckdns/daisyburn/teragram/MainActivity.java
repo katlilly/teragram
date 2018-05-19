@@ -20,13 +20,19 @@ public class MainActivity extends AppCompatActivity {
     TextView question;
     EditText answer;
     TextView response;
-
-    Random rand = new Random();
-    int addend1 = rand.nextInt(20);
-    int addend2 = rand.nextInt(20);
-
     int level = 1;
     int maxLevel = 10;
+
+    Random rand = new Random();
+    int operand1 = rand.nextInt(50 * level);
+    int operand2 = rand.nextInt(50 * level);
+
+
+
+    int correctCount = 0;
+    int wrongCount = 0;
+
+    String operation = "+";
 
 
     @Override
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         answer = (EditText) findViewById(R.id.answer);
         response = (TextView) findViewById(R.id.response);
 
-        question.setText("" + addend1 + " + " + addend2 + " =");
+        question.setText("" + operand1 + " " + operation + operand2 + " =");
 
 
         Button submitAnswer = (Button) findViewById(R.id.submit);
@@ -58,13 +64,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                int correctAnswer = addend1 + addend2;
+                int correctAnswer = 0;
+
+                if (operation == "+") correctAnswer = operand1 + operand2;
+                if (operation == "-") correctAnswer = operand1 - operand2;
                 int submittedAnswer = Integer.parseInt(answer.getText().toString());
 
                 if (submittedAnswer == correctAnswer) {
                     response.setText("correct!");
+                    correctCount++;
+                    wrongCount = 0;
+                    if (correctCount == 3) {
+                        level++;
+                        correctCount = 0;
+                    }
                 } else {
                     response.setText("try again");
+                    wrongCount++;
+                    correctCount = 0;
+                    if (wrongCount == 2) {
+                        level--;
+                        wrongCount = 0;
+                    }
                 }
 
 
@@ -75,9 +96,9 @@ public class MainActivity extends AppCompatActivity {
         newQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addend1 = rand.nextInt(20 + level * 50);
-                addend2 = rand.nextInt(20 + level * 50);
-                question.setText("" + addend1 + " + " + addend2 + " =");
+                operand1 = rand.nextInt(level * 50);
+                operand2 = rand.nextInt(level * 50);
+                question.setText("" + operand1 + operation + operand2 + " =");
 
             }
         });
@@ -88,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 level++;
                 if (level > maxLevel) level = maxLevel;
-                addend1 = rand.nextInt(20 + level * 50);
-                addend2 = rand.nextInt(20 + level * 50);
-                question.setText("" + addend1 + " + " + addend2 + " =");
+                operand1 = rand.nextInt(level * 50);
+                operand2 = rand.nextInt(level * 50);
+                question.setText("" + operand1 + operation + operand2 + " =");
 
             }
         });
@@ -101,9 +122,34 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 level--;
                 if (level < 1) level = 1;
-                addend1 = rand.nextInt(20 + level * 50);
-                addend2 = rand.nextInt(20 + level * 50);
-                question.setText("" + addend1 + " + " + addend2 + " =");
+                operand1 = rand.nextInt(level * 50);
+                operand2 = rand.nextInt(level * 50);
+                question.setText("" + operand1 + operation + operand2 + " =");
+            }
+        });
+
+
+        Button plus = (Button) findViewById(R.id.plus);
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                operation = "+";
+            }
+        });
+
+        Button minus = (Button) findViewById(R.id.minus);
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                operation = "-";
+                operand1 = rand.nextInt(50 * level);
+                operand2 = rand.nextInt(50 * level);
+                if (operand2 > operand1) {
+                    int temp = operand1;
+                    operand1 = operand2;
+                    operand2 = temp;
+                }
+                question.setText("" + operand1 + operation + operand2 + " =");
             }
         });
 
