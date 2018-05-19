@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         answer = (EditText) findViewById(R.id.answer);
         response = (TextView) findViewById(R.id.response);
 
-        question.setText("" + addend1 + "+" + addend2 + "=");
+        question.setText("" + addend1 + " + " + addend2 + " =");
 
 
         Button submitAnswer = (Button) findViewById(R.id.submit);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 addend1 = rand.nextInt(20 + level * 50);
                 addend2 = rand.nextInt(20 + level * 50);
-                question.setText("" + addend1 + "+" + addend2 + "=");
+                question.setText("" + addend1 + " + " + addend2 + " =");
 
             }
         });
@@ -87,12 +87,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 level++;
-                if (level > maxLevel) {
-                    level = maxLevel;
-                }
+                if (level > maxLevel) level = maxLevel;
+                addend1 = rand.nextInt(20 + level * 50);
+                addend2 = rand.nextInt(20 + level * 50);
+                question.setText("" + addend1 + " + " + addend2 + " =");
 
             }
         });
+
+        Button tooHard = (Button) findViewById(R.id.tooHard);
+        tooHard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                level--;
+                if (level < 1) level = 1;
+                addend1 = rand.nextInt(20 + level * 50);
+                addend2 = rand.nextInt(20 + level * 50);
+                question.setText("" + addend1 + " + " + addend2 + " =");
+            }
+        });
+
 
     }
 
