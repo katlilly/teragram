@@ -15,11 +15,11 @@
         android:text="Can you add these numbers?"
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/question"
@@ -28,53 +28,53 @@
         android:text="37 + 5 ="
         android:textSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.3" />
 
 
     <EditText
         android:id="@+id/answer"
-        android:hint="answer here"
+        android:hint="answer"
         android:inputType="number"
         android:textSize="36dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"  />
+        app:layout_constraintVertical_bias="0.44"  />
 
     <Button
         android:id="@+id/newQuestion"
-        android:layout_width="98dp"
+        android:layout_width="78dp"
         android:layout_height="49dp"
         android:background="#909090"
         android:text="new question"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.06" />
 
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="98dp"
-        android:layout_height="49dp"
-        android:background="#909090"
-        android:text="submit answer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+    <!--<Button-->
+        <!--android:id="@+id/submit"-->
+        <!--android:layout_width="98dp"-->
+        <!--android:layout_height="49dp"-->
+        <!--android:background="#909090"-->
+        <!--android:text="submit answer"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.2"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.5" />-->
 
     <Button
         android:id="@+id/plus"
@@ -88,7 +88,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <Button
         android:id="@+id/minus"
@@ -98,11 +98,11 @@
         android:text="-"
         android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <Button
         android:id="@+id/times"
@@ -112,50 +112,38 @@
         android:text="x"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.06" />
 
-    <Button
-        android:id="@+id/divide"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:background="#909090"
-        android:text="/"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+
 
     <Button
         android:id="@+id/tooEasy"
         android:layout_width="98dp"
         android:layout_height="49dp"
-        android:background="#909090"
+        android:background="#b9ec39"
         android:text="too easy"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.22"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.63" />
 
     <Button
         android:id="@+id/tooHard"
         android:layout_width="98dp"
         android:layout_height="49dp"
-        android:background="#909090"
+        android:background="#925af5"
         android:text="too hard"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.63" />
 
 </android.support.constraint.ConstraintLayout>

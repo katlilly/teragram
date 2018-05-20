@@ -1,11 +1,14 @@
 package org.duckdns.daisyburn.teragram;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,23 +20,54 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    String[] commands = new String[]{"too easy", "too hard", "new question"};
+
     TextView question;
     EditText answer;
     TextView response;
     int level = 1;
-    int maxLevel = 10;
-
-    Random rand = new Random();
-    int operand1 = rand.nextInt(50 * level);
-    int operand2 = rand.nextInt(50 * level);
-
-
-
+    int maxLevel = 20;
     int correctCount = 0;
     int wrongCount = 0;
 
+    // first question will be addition
     String operation = "+";
 
+    // get random numbers for initial question
+    Random rand = new Random();
+    int operand1 = rand.nextInt(5 + level * 20);
+    int operand2 = rand.nextInt(5 + level * 20);
+
+    public void setOperands() {
+        operand1 = rand.nextInt(5 + level * 20);
+        operand2 = rand.nextInt(5 + level * 20);
+        if (operand2 > operand1) {
+            int temp = operand1;
+            operand1 = operand2;
+            operand2 = temp;
+        }
+    }
+
+    public void clearAnswer() {
+        answer = (EditText) findViewById(R.id.answer);
+        answer.setText("");
+    }
+
+    // use this method when user asks for a different question
+    public void newQuestion() {
+        question = (TextView) findViewById(R.id.question);
+        setOperands();
+        question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
+        response.setText("can you answer this one?");
+    }
+
+    // use this method after a correct question
+    public void nextQuestion() {
+        question = (TextView) findViewById(R.id.question);
+        setOperands();
+        question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
+        // don't remove "correct" message unless new question is explicitly asked for
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,55 +85,110 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final MediaPlayer correctSound = MediaPlayer.create(this, R.raw.correct);
+        final MediaPlayer tryagainSound = MediaPlayer.create(this, R.raw.tryagain);
 
+
+        // create references to the text elements and buttons
         question = (TextView) findViewById(R.id.question);
         answer = (EditText) findViewById(R.id.answer);
         response = (TextView) findViewById(R.id.response);
 
-        question.setText("" + operand1 + " " + operation + operand2 + " =");
+        // set the first question
+        question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
 
-
-        Button submitAnswer = (Button) findViewById(R.id.submit);
-        submitAnswer.setOnClickListener(new View.OnClickListener() {
+        answer.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
 
-                int correctAnswer = 0;
+                    int correctAnswer = 0;
+                    if (operation == "+") correctAnswer = operand1 + operand2;
+                    else if (operation == "-") correctAnswer = operand1 - operand2;
+                    else if (operation == "*") correctAnswer = operand1 * operand2;
 
-                if (operation == "+") correctAnswer = operand1 + operand2;
-                if (operation == "-") correctAnswer = operand1 - operand2;
-                int submittedAnswer = Integer.parseInt(answer.getText().toString());
-
-                if (submittedAnswer == correctAnswer) {
-                    response.setText("correct!");
-                    correctCount++;
-                    wrongCount = 0;
-                    if (correctCount == 3) {
-                        level++;
-                        correctCount = 0;
+                    try {
+                        int submittedAnswer = Integer.parseInt(answer.getText().toString());
+                        if (submittedAnswer == correctAnswer) {
+                            response.setText("correct!");
+                            correctSound.start();
+                            correctCount++;
+                            wrongCount = 0;
+                            if (correctCount == 10) {
+                                level++;
+                                correctCount = 0;
+                            }
+                            clearAnswer();
+                            nextQuestion();
+                        } else {
+                            response.setText("try again");
+                            tryagainSound.start();
+                            wrongCount++;
+                            correctCount = 0;
+                            if (wrongCount == 2) {
+                                level--;
+                                wrongCount = 0;
+                            }
+                            clearAnswer();
+                        }
+                    } catch (NumberFormatException e) {
+                        response.setText("try again");
+                        // shouldn't need to do anything here
+                        // do nothing in the case that there is no answer to submit
                     }
-                } else {
-                    response.setText("try again");
-                    wrongCount++;
-                    correctCount = 0;
-                    if (wrongCount == 2) {
-                        level--;
-                        wrongCount = 0;
-                    }
+                    return true;
                 }
-
-
+                return false;
             }
         });
+
+
+
+//        Button submitAnswer = (Button) findViewById(R.id.submit);
+//        submitAnswer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                int correctAnswer = 0;
+//                if (operation == "+") correctAnswer = operand1 + operand2;
+//                if (operation == "-") correctAnswer = operand1 - operand2;
+//                if (operation == "*") correctAnswer = operand1 * operand2;
+//
+//                try {
+//                    int submittedAnswer = Integer.parseInt(answer.getText().toString());
+//                    if (submittedAnswer == correctAnswer) {
+//                        response.setText("correct!");
+//                        correctCount++;
+//                        wrongCount = 0;
+//                        if (correctCount == 10) {
+//                            level++;
+//                            correctCount = 0;
+//                        }
+//                        clearAnswer();
+//                        nextQuestion();
+//                    } else {
+//                        response.setText("try again");
+//                        wrongCount++;
+//                        correctCount = 0;
+//                        if (wrongCount == 2) {
+//                            level--;
+//                            wrongCount = 0;
+//                        }
+//                        clearAnswer();
+//                    }
+//                } catch (NumberFormatException e) {
+//                    // shouldn't need to do anything here
+//                    // do nothing in the case that there is no answer to submit
+//                }
+//            }
+//        });
 
         Button newQuestion = (Button) findViewById(R.id.newQuestion);
         newQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                operand1 = rand.nextInt(level * 50);
-                operand2 = rand.nextInt(level * 50);
-                question.setText("" + operand1 + operation + operand2 + " =");
-
+                newQuestion();
             }
         });
 
@@ -109,10 +198,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 level++;
                 if (level > maxLevel) level = maxLevel;
-                operand1 = rand.nextInt(level * 50);
-                operand2 = rand.nextInt(level * 50);
-                question.setText("" + operand1 + operation + operand2 + " =");
-
+                newQuestion();
+                //operand1 = rand.nextInt(5 + level * 50);
+                //operand2 = rand.nextInt(5 + level * 50);
+                //question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
             }
         });
 
@@ -121,10 +210,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 level--;
-                if (level < 1) level = 1;
-                operand1 = rand.nextInt(level * 50);
-                operand2 = rand.nextInt(level * 50);
-                question.setText("" + operand1 + operation + operand2 + " =");
+                if (level < 0) level = 0;
+                newQuestion();
+                //operand1 = rand.nextInt(5 + level * 50);
+                //operand2 = rand.nextInt(5 + level * 50);
+                //question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
             }
         });
 
@@ -134,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 operation = "+";
+                newQuestion();
             }
         });
 
@@ -142,14 +233,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 operation = "-";
-                operand1 = rand.nextInt(50 * level);
-                operand2 = rand.nextInt(50 * level);
-                if (operand2 > operand1) {
-                    int temp = operand1;
-                    operand1 = operand2;
-                    operand2 = temp;
-                }
-                question.setText("" + operand1 + operation + operand2 + " =");
+                newQuestion();
+                //question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
+            }
+        });
+
+        Button times = (Button) findViewById(R.id.times);
+        times.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                operation = "*";
+                newQuestion();
+                //question.setText("" + operand1 + " " + operation + " " + operand2 + " =");
             }
         });
 
